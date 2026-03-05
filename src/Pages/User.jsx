@@ -1,9 +1,10 @@
 import React from 'react'
+import PageTitle from '../Components/PageTitle'
 
 const User = () => {
   return (
     <div>
-      <h1>user</h1>
+      <PageTitle/>
     </div>
   )
 }

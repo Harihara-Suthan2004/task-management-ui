@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Header = () => {
+
     return (
         <section className='flex justify-between items-center'>
             <div className='px-10 py-5 flex items-center gap-2 w-72'>
