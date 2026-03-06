@@ -20,7 +20,7 @@ const PageTitle = () => {
     }
     const currenttitle=pageconfig[location.pathname] || pageconfig['/'];
     return (
-        <section className='flex items-center justify-between w-full h-20 rounded-2xl bg-white shadow-md'>
+        <section className='flex items-center justify-between w-full h-20 border border-gray-300 rounded-2xl bg-white shadow-md'>
             <div className='flex item-center justify-center w-1/4 '>
                 <span className='font-semibold text-3xl'>{currenttitle.title}</span>
             </div>

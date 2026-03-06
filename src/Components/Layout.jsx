@@ -7,17 +7,17 @@ const Layout = () => {
     return (
         <div className="flex flex-col h-screen">
 
-            <div className="h-20 bg-white shadow-md z-10 shrink-0">
+            <div className="h-20 bg-white z-10 shrink-0">
                 <Header />
             </div>
 
             <div className="flex flex-1 overflow-hidden">
 
-                <div className="w-60 bg-white shrink-0">
+                <div className="w-60 shadow-md bg-white shrink-0 border-r border-gray-300">
                     <Sidebar />
                 </div>
 
-                <main className="flex-1 bg-[#F8F8F8] overflow-auto">
+                <main className="flex-1 bg-[#ebe8e8] overflow-auto">
                     <div className="p-6 h-full">
                         <Outlet />
                     </div>

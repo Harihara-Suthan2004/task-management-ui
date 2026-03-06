@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PageTitle from '../components/PageTitle'
-import { getDashboardData } from '../Services/ProjectService';
+import { useProject } from '../Context/ProjectContext';
 
 const Dashboard = () => {
 
-    const [APIdata, setAPIdata] = useState([]);
-    useEffect(() => {
-        const FetchallDashData = async () => {
-            try {
-                const Res = await getDashboardData();
-                setAPIdata(Res);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        }
+    const{allData,loading} = useProject();
 
-        FetchallDashData();
-    }, [])
+    if (loading) {
+        return (
+            <div className="flex h-64 items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+            </div>
+        );
+    }
 
     //logic for Summary Cards
-    const totalproject = APIdata.length;
+    const totalproject = allData.length;
     let totaltaskcount = 0;
-    APIdata.forEach((project) => {
+    allData.forEach((project) => {
         totaltaskcount = totaltaskcount + (project.tasks?.length || 0);
     })
-    const allmembers = APIdata.flatMap(project => project.members || []);
+    const allmembers = allData.flatMap(project => project.members || []);
     const uniqueusercount = new Set(allmembers).size
     return (
 
@@ -67,7 +62,7 @@ const Dashboard = () => {
                     <div className='grid grid-cols-2 overflow-auto h-full [&::-webkit-scrollbar]:hidden 
                 [-ms-overflow-style:none] 
                 [scrollbar-width:none]'>
-                        {APIdata.map((project) => {
+                        {allData.map((project) => {
                             const todo = project.tasks?.filter(t => t.status === "todo").length || 0;
                             const inprogress = project.tasks?.filter(t => t.status === "progress").length || 0;
                             const done = project.tasks?.filter(t => t.status === "done").length || 0;

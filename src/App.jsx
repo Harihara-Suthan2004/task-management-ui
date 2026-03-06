@@ -4,10 +4,12 @@ import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import User from './pages/User'
 import Project from './pages/Project'
+import { ProjectProvider } from './Context/ProjectProvier'
 
 function App() {
   return (
     <div>
+      <ProjectProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -17,6 +19,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </ProjectProvider>
     </div>
   )
 }
