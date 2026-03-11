@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import User from './pages/User'
 import Project from './pages/Project'
 import { ProjectProvider } from './Context/ProjectProvier'
+import ProjectDetails from './pages/ProjectDetails'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path='User' element={<User/>}/>
             <Route path='Project' element={<Project/>}/>
+            <Route path='Project/:id' element={<ProjectDetails/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 
-const PageTitle = () => {
+const PageTitle = ({onAddClick}) => {
         const location=useLocation();
     
     const pageconfig={
@@ -15,7 +15,8 @@ const PageTitle = () => {
         },
         '/Project':{
             title:'Project',
-            button:<button className='bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors'>Add Project</button>
+            button:<button onClick={onAddClick}
+            className='bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors'>Add Project</button>
         }
     }
     const currenttitle=pageconfig[location.pathname] || pageconfig['/'];

@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageTitle from '../Components/PageTitle'
 import filtericon from '../assets/images/FilterIcon.png'
 import { useProject } from '../Context/ProjectContext'
 import ViewIcon from '../assets/images/ViewIcon.png'
 import EditIcon from '../assets/images/EditIcon.png'
 import DeleteIcon from '../assets/images/DeleteIcon.png'
+import ProjectModel from '../components/ProjectModel'
+import ProjectDetails from './ProjectDetails'
+import { useNavigate } from 'react-router-dom'
 
 const Project = () => {
-  const { allData, loading } = useProject();
+  const { allData, loading,deleteProject } = useProject();
+  const [isModelOpen,setisModelOpen]=useState(false);
+  const navigate=useNavigate();
 
   if (loading) {
     return (
@@ -19,7 +24,15 @@ const Project = () => {
 
   return (
     <div className='bg-[#ebe8e8] min-h-screen pb-10'>
-      <PageTitle />
+      <PageTitle onAddClick={()=>setisModelOpen(true)}/>
+
+        {isModelOpen &&(
+          <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg mx-4">
+            <ProjectModel onClose={() => setisModelOpen(false)} />
+          </div>
+        </div>
+        )}
 
       <section className='bg-white mt-7 mx-10 rounded-md shadow-md border border-gray-300  overflow-hidden'>
         <div className='w-full flex justify-between px-10 py-3 bor'>
@@ -57,16 +70,19 @@ const Project = () => {
                   <td className='p-4 text-center '>
                     <div className='flex justify-center gap-3'>
                         <button>
-                      <img src={ViewIcon} alt="" className='w-5 h-5 cursor-pointer' />
+                      <img src={ViewIcon} alt="" className='w-5 h-5 cursor-pointer' onClick={()=>navigate(`/Project/${project.project_id}`)} />
                     </button>
                     <button>
                       <img src={EditIcon} alt="" className='w-5 h-5 cursor-pointer' />
                     </button>
-                    <button>
+                    <button onClick={()=>{
+                      if(window.confirm("Are you sure want to delete the project")){
+                        deleteProject(project.project_id);
+                      }
+                    }}>
                       <img src={DeleteIcon} alt="" className='w-5 h-5 cursor-pointer' />
                     </button>
                     </div>
-                    
                   </td>
                 </tr>
               ))}

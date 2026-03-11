@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDashboardData } from "../Services/ProjectService";
+import { API_URL, getDashboardData } from "../Services/ProjectService";
 import { ProjectContext } from "./ProjectContext"; 
 
 export const ProjectProvider = ({ children }) => {
@@ -21,8 +21,25 @@ export const ProjectProvider = ({ children }) => {
         refreshData();
     }, []);
 
+    const deleteProject=async (id)=>{
+        try{
+            const response=await fetch(`${API_URL}/projects/${id}`,{
+                method:'DELETE',
+            });
+            if(response.ok){
+                setallData((prevdata)=>prevdata.filter(project=>project.id !== id && project.project_id!==id));
+            }
+            else{
+                alert("Failed to delete the data")
+            }
+        }
+        catch(error){
+            console.log("Delete Error: ",error);
+        }
+    };
+    
     return (
-        <ProjectContext.Provider value={{ loading, allData, refreshData }}>
+        <ProjectContext.Provider value={{ loading, allData, refreshData,deleteProject }}>
             {children}
         </ProjectContext.Provider>
     );
