@@ -1,12 +1,148 @@
-import React from 'react'
-import PageTitle from '../Components/PageTitle'
+import React, { useState } from "react";
+import PageTitle from "../components/PageTitle";
+import filtericon from "../assets/images/FilterIcon.png";
+import ViewIcon from "../assets/images/ViewIcon.png";
+import DeleteIcon from "../assets/images/DeleteIcon.png";
+import AddUserModal from "../components/AddUserModal";
+import DeleteUserModal from "../components/DeleteUserModal";
+import { useUser } from "../Context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const User = () => {
-  return (
-    <div>
-      <PageTitle/>
-    </div>
-  )
-}
 
-export default User
+  const { allUsers, loading, refreshUsers } = useUser();
+
+  const navigate = useNavigate();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(null);
+
+  if (loading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#ebe8e8] min-h-screen pb-10">
+
+      <PageTitle onAddClick={() => setOpenModal(true)} />
+
+      <section className="bg-white mt-7 mx-10 rounded-md shadow-md border border-gray-300 overflow-hidden">
+
+        {/* Header */}
+        <div className="w-full flex justify-between px-10 py-3">
+
+          <span className="font-semibold text-gray-700">
+            Total Users {allUsers.length}
+          </span>
+
+          <div className="flex gap-3">
+            <div className="flex items-center justify-center w-9 h-9 bg-[#F8F8F8] border border-gray-200 rounded-md cursor-pointer">
+              <img src={filtericon} className="w-4 h-4" />
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Table */}
+
+        <section className="px-10 pt-2 pb-9">
+
+          <table className="w-full border border-gray-200">
+
+            <thead>
+              <tr className="bg-[#F8F8F8] border-b">
+
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                  ID
+                </th>
+
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                  Name
+                </th>
+
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                  Email
+                </th>
+
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                  Role
+                </th>
+
+                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">
+                  Action
+                </th>
+
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-100">
+
+              {allUsers.map((user, index) => (
+
+                <tr key={user.id}>
+
+                  <td className="p-4 text-sm">{index + 1}</td>
+
+                  <td className="p-4 text-sm">{user.name}</td>
+
+                  <td className="p-4 text-sm">{user.email}</td>
+
+                  <td className="p-4 text-sm">{user.role}</td>
+
+                  <td className="p-4 text-center">
+
+                    <div className="flex justify-center gap-3">
+
+                      {/* View */}
+                      <button onClick={() => navigate(`/User/${user.id}`)}>
+                        <img src={ViewIcon} className="w-5 h-5 cursor-pointer" />
+                      </button>
+
+                      {/* Delete */}
+                      <button onClick={() => setDeleteUser(user)}>
+                        <img src={DeleteIcon} className="w-5 h-5 cursor-pointer" />
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </section>
+
+      </section>
+
+      {/* Add User Modal */}
+      {openModal && (
+        <AddUserModal
+          closeModal={() => setOpenModal(false)}
+          reloadUsers={refreshUsers}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {deleteUser && (
+        <DeleteUserModal
+          user={deleteUser}
+          closeModal={() => setDeleteUser(null)}
+          reloadUsers={refreshUsers}
+        />
+      )}
+
+    </div>
+  );
+};
+
+export default User;
