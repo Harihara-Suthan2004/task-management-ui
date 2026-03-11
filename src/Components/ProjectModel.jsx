@@ -59,7 +59,7 @@ const ProjectModel = ({ onClose }) => {
     return (
         <section>
             <div className='flex justify-between h-5 items-center mb-6'>
-                <span className='font-semibold text-2xl'>Create New Project</span>
+                <span className='font-semibold text-2xl text-gray-600'>Create New Project</span>
                 <img src={CloseIcon} alt="Close" onClick={onClose} className="cursor-pointer" />
             </div>
 
@@ -67,7 +67,7 @@ const ProjectModel = ({ onClose }) => {
                 {/* Fixed height h-36 removed for better spacing in live forms */}
                 <div className='flex flex-col gap-4 mt-5'>
                     <div className='flex flex-col'>
-                        <label className='font-medium'>Project Title</label>
+                        <label className='font-medium text-gray-600'>Project Title</label>
                         <input 
                             name="project_title"
                             value={formData.project_title}
@@ -80,7 +80,7 @@ const ProjectModel = ({ onClose }) => {
                     </div>
                     
                     <div className='flex flex-col'>
-                        <label className='font-medium'>Description</label>
+                        <label className='font-medium text-gray-600'>Description</label>
                         <input 
                             name="description"
                             value={formData.description}
@@ -92,7 +92,7 @@ const ProjectModel = ({ onClose }) => {
                     </div>
 
                     <div className='flex flex-col'>
-                        <label className='font-medium'>Select Manager</label>
+                        <label className='font-medium text-gray-600'>Select Manager</label>
                         <select 
                             name="manager"
                             value={formData.manager} 
@@ -100,7 +100,7 @@ const ProjectModel = ({ onClose }) => {
                             required
                             className='border rounded-md p-1 bg-white'
                         >
-                            <option value="">Select Manager</option>
+                            <option className='text-gray-600' value="">Select Manager</option>
                             {loading ? (
                                 <option>Loading Manager.......</option>
                             ) : (
