@@ -10,7 +10,7 @@ const ProjectModel = ({ onClose }) => {
 
     // 1. Manage all form fields in one state object
     const [formData, setFormData] = useState({
-        project_id:allData.length+1,
+        id:allData.length+1,
         project_title: "",
         description: "",
         manager: "",
@@ -42,9 +42,9 @@ const ProjectModel = ({ onClose }) => {
             if (response.ok) {            
                 await refreshData();
                 alert("Project created successfully!");
-                navigate(`/Project/${formData.project_id}`);
+                navigate(`/Project/${formData.id}`);
                 onClose(); 
-                navigate(`/Project/${formData.project_id}`);
+                navigate(`/Project/${formData.id}`);
             } else {
                 alert("Failed to create project.");
             }

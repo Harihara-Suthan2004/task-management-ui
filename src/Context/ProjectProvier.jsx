@@ -23,11 +23,11 @@ export const ProjectProvider = ({ children }) => {
 
     const deleteProject=async (id)=>{
         try{
-            const response=await fetch(`${API_URL}/projects/${id}`,{
+            const response=await fetch(`${API_URL}/${id}`,{
                 method:'DELETE',
             });
             if(response.ok){
-                setallData((prevdata)=>prevdata.filter(project=>project.id !== id && project.project_id!==id));
+                setallData((prevdata)=>prevdata.filter(project=>project.id !== id && project.id!==id));
             }
             else{
                 alert("Failed to delete the data")

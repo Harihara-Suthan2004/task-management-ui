@@ -56,8 +56,8 @@ const Project = () => {
             </thead>
             <tbody className='divide-y divide-gray-100'>
               {allData.map((project) => (
-                <tr key={project.project_id} className=''>
-                  <td className='p-4 text-sm'>{project.project_id}</td>
+                <tr key={project.id} className=''>
+                  <td className='p-4 text-sm'>{project.id}</td>
                   <td className='p-4 text-sm'>{project.project_title}</td>
                   <td className='p-4 text-sm leading-relaxed'>
                     <div className="line-clamp-2">{project.description}</div>
@@ -70,17 +70,17 @@ const Project = () => {
                   <td className='p-4 text-center '>
                     <div className='flex justify-center gap-3'>
                         <button>
-                      <img src={ViewIcon} alt="" className='w-5 h-5 cursor-pointer' onClick={()=>navigate(`/Project/${project.project_id}`)} />
+                      <img src={ViewIcon} alt="" className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' onClick={()=>navigate(`/Project/${project.id}`)} />
                     </button>
                     <button>
-                      <img src={EditIcon} alt="" className='w-5 h-5 cursor-pointer' />
+                      <img src={EditIcon} alt="" className='w-5 h-5 cursor-pointer hover:scale-110 transition-transform' />
                     </button>
                     <button onClick={()=>{
                       if(window.confirm("Are you sure want to delete the project")){
-                        deleteProject(project.project_id);
+                        deleteProject(project.id);
                       }
                     }}>
-                      <img src={DeleteIcon} alt="" className='w-5 h-5 cursor-pointer' />
+                      <img src={DeleteIcon} alt="" className='w-5 h-5 cursor-pointer hover:scale-110 transition-transform' />
                     </button>
                     </div>
                   </td>
