@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useProject } from '../Context/ProjectContext'
 import { useNavigate, useParams } from 'react-router-dom'
 import BackArrowIcon from '../assets/images/BackArrowIcon.png'
 import filtericon from '../assets/images/FilterIcon.png'
 import ViewIcon from '../assets/images/ViewIcon.png'
 import DeleteIcon from '../assets/images/DeleteIcon.png'
+import TaskModel from '../components/TaskModel'
 
 const ProjectDetails = () => {
+    const [visible,setvisible]=useState(false);
     const { id } = useParams();
     const { allData } = useProject();
     const navigate = useNavigate();
@@ -23,14 +25,28 @@ const ProjectDetails = () => {
     };
 
     return (
-        <div className='flex flex-col'>
+        <div className={`flex flex-col ${visible ? 'overflow-hidden h-screen' : ''}`}>
+            {visible && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+                    {/* The TaskModel inside a white container */}
+                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative p-8">
+                        <button 
+                            onClick={() => setvisible(false)} 
+                            className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl"
+                        >
+                            &times;
+                        </button>
+                        <TaskModel onClose={()=>setvisible(false)} projectData={project}/>
+                    </div>
+                </div>
+            )}
             {/* Header Section */}
             <section className='flex w-full justify-between items-center px-12 h-20 border-gray-300 rounded-2xl border shadow-md bg-white p-3'>
                 <div className='flex items-center p-2'>
                     <img src={BackArrowIcon} alt="back" className='w-8 h-8 hover:bg-gray-300 rounded-full mr-7 cursor-pointer' onClick={() => navigate('/Project')} />
                     <span className='font-semibold text-2xl'>{project.project_title} — Tasks ({project.tasks.length})</span>
                 </div>
-                <button className='bg-blue-600 h-10 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors'>
+                <button onClick={()=>setvisible(true)} className='bg-blue-600 h-10 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors'>
                     Add Task
                 </button>
             </section>
@@ -79,7 +95,7 @@ const ProjectDetails = () => {
                                     <td className="py-4 text-sm text-center">
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
                                             task.priority === 'high' ? 'bg-red-100 text-red-600' :
-                                            task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                            task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700':
                                             'bg-blue-100 text-blue-600'
                                         }`}>
                                             {task.priority}
@@ -87,7 +103,9 @@ const ProjectDetails = () => {
                                     </td>
                                     <td className='py-4 text-center'>
                                         <div className='flex justify-center gap-4'>
-                                            <button className='hover:scale-110 transition-transform cursor-pointer'><img src={ViewIcon} alt="view" /></button>
+                                            <button className='hover:scale-110 transition-transform cursor-pointer'
+                                            onClick={() => navigate(`/Project/${id}/task/${task.id}`)}
+                                            ><img src={ViewIcon} alt="view" /></button>
                                             <button className='hover:scale-110 transition-transform cursor-pointer'><img src={DeleteIcon} alt="delete" /></button>
                                         </div>
                                     </td>

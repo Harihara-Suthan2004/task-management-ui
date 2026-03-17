@@ -34,7 +34,7 @@ const Project = () => {
         </div>
         )}
 
-      <section className='bg-white mt-7 mx-10 rounded-md shadow-md border border-gray-300  overflow-hidden'>
+      <section className='bg-white mt-7  rounded-md shadow-md border border-gray-300  overflow-hidden'>
         <div className='w-full flex justify-between px-10 py-3 bor'>
           <span className='font-semibold text-gray-700'>Total Projects {allData.length}</span>
           <div className='flex items-center justify-center w-9 h-9 bg-[#F8F8F8] hover:bg-gray-100 cursor-pointer rounded-md transition-all border border-gray-200'>
