@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PageTitle from "../components/PageTitle";
 import filtericon from "../assets/images/FilterIcon.png";
 import ViewIcon from "../assets/images/ViewIcon.png";
@@ -10,12 +10,26 @@ import { useNavigate } from "react-router-dom";
 
 const User = () => {
 
-  const { allUsers, loading, refreshUsers } = useUser();
-
   const navigate = useNavigate();
+  const { allUsers, loading, refreshUsers } = useUser();
 
   const [openModal, setOpenModal] = useState(false);
   const [deleteUser, setDeleteUser] = useState(null);
+
+  useEffect(() => {
+    refreshUsers();
+  }, [refreshUsers]);
+
+  // flatten + remove duplicates (professional approach)
+  const users = useMemo(() => {
+
+    const flattened = allUsers
+      .flatMap(project => project.users || [])
+      .filter(user => user?.name && user?.email);
+
+    return [...new Map(flattened.map(user => [user.id, user])).values()];
+
+  }, [allUsers]);
 
   if (loading) {
     return (
@@ -33,23 +47,17 @@ const User = () => {
       <section className="bg-white mt-7 mx-10 rounded-md shadow-md border border-gray-300 overflow-hidden">
 
         {/* Header */}
-        <div className="w-full flex justify-between px-10 py-3">
-
+        <div className="flex justify-between px-10 py-3">
           <span className="font-semibold text-gray-700">
-            Total Users {allUsers.length}
+            Total Users {users.length}
           </span>
 
-          <div className="flex gap-3">
-            <div className="flex items-center justify-center w-9 h-9 bg-[#F8F8F8] border border-gray-200 rounded-md cursor-pointer">
-              <img src={filtericon} className="w-4 h-4" />
-            </div>
-
+          <div className="flex items-center justify-center w-9 h-9 bg-[#F8F8F8] border border-gray-200 rounded-md cursor-pointer">
+            <img src={filtericon} className="w-4 h-4" />
           </div>
-
         </div>
 
         {/* Table */}
-
         <section className="px-10 pt-2 pb-9">
 
           <table className="w-full border border-gray-200">
@@ -57,53 +65,50 @@ const User = () => {
             <thead>
               <tr className="bg-[#F8F8F8] border-b">
 
-                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                  ID
-                </th>
-
-                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Name
-                </th>
-
-                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Email
-                </th>
-
-                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Role
-                </th>
-
-                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">
-                  Action
-                </th>
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Role</th>
+                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Email Verified</th>
+                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Action</th>
 
               </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-100">
 
-              {allUsers.map((user, index) => (
+              {users.map((user, index) => (
 
                 <tr key={user.id}>
 
                   <td className="p-4 text-sm">{index + 1}</td>
-
                   <td className="p-4 text-sm">{user.name}</td>
-
                   <td className="p-4 text-sm">{user.email}</td>
 
-                  <td className="p-4 text-sm">{user.role}</td>
+                  <td className="p-4 text-sm">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium
+                        ${user.role === "manager"
+                          ? "bg-blue-100 text-blue-600"
+                          : "bg-green-100 text-green-600"
+                        }`}
+                    >
+                      {user.role.toUpperCase()}
+                    </span>
+                  </td>
+
+                  <td className="p-4 text-sm text-gray-600 font-medium">
+                    Yes
+                  </td>
 
                   <td className="p-4 text-center">
 
                     <div className="flex justify-center gap-3">
 
-                      {/* View */}
                       <button onClick={() => navigate(`/User/${user.id}`)}>
-                        <img src={ViewIcon} className="w-5 h-5 cursor-pointer" />
+                        <img src={ViewIcon} className="w-5 h-5" />
                       </button>
 
-                      {/* Delete */}
                       <button onClick={() => setDeleteUser(user)}>
                         <img src={DeleteIcon} className="w-5 h-5 cursor-pointer" />
                       </button>

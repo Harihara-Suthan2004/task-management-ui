@@ -1,20 +1,43 @@
 import React from "react";
 import axios from "axios";
 
-const API_URL = "https://69a92ef932e2d46caf457735.mockapi.io/users";
+const API_URL = "https://69a720a32cd1d055268ff452.mockapi.io/tm_project";
 
 const DeleteUserModal = ({ user, closeModal, reloadUsers }) => {
+const deleteUser = async () => {
+  try {
 
-  const deleteUser = async () => {
+    const res = await axios.get(API_URL);
+    const projects = res.data;
 
-    await axios.delete(`${API_URL}/${user.id}`);
+    // find the project that contains the user
+    const project = projects.find(p =>
+      p.users?.some(u => String(u.id) === String(user.id))
+    );
 
-    reloadUsers();
+    if (!project) {
+      console.log("User not found in any project");
+      return;
+    }
+
+    const updatedUsers = project.users.filter(
+      u => String(u.id) !== String(user.id)
+    );
+
+    await axios.put(`${API_URL}/${project.id}`, {
+      ...project,
+      users: updatedUsers
+    });
+
+    await reloadUsers();
     closeModal();
-  };
+
+  } catch (error) {
+    console.log("Delete error:", error);
+  }
+};
 
   return (
-
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
 
       <div className="bg-white w-100 rounded-lg p-6 shadow-lg">
@@ -24,7 +47,7 @@ const DeleteUserModal = ({ user, closeModal, reloadUsers }) => {
         </h2>
 
         <p className="text-center text-gray-600 mb-6">
-          Are you sure you want to delete <b>{user.name}</b>?
+          Are you sure you want to delete <b>{user?.name}</b>?
         </p>
 
         <div className="flex justify-center gap-4">

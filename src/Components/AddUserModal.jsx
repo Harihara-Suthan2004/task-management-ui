@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const API_URL = "https://69a92ef932e2d46caf457735.mockapi.io/users";
+const API_URL = "https://69a720a32cd1d055268ff452.mockapi.io/tm_project";
 
 const AddUserModal = ({ closeModal, reloadUsers }) => {
 
@@ -9,22 +9,37 @@ const AddUserModal = ({ closeModal, reloadUsers }) => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("user");
 
-  const createUser = async () => {
+const createUser = async () => {
 
-    if (!name || !email) {
-      alert("Please fill all fields");
-      return;
-    }
+  if (!name || !email) {
+    alert("Please fill all fields");
+    return;
+  }
 
-    await axios.post(API_URL, {
+  const res = await axios.get(API_URL);
+
+  const projects = res.data;
+
+  const firstProject = projects[0]; // choose project
+
+  const updatedUsers = [
+    ...firstProject.users,
+    {
+      id: Date.now().toString(),
       name,
       email,
       role
-    });
+    }
+  ];
 
-    reloadUsers();
-    closeModal();
-  };
+  await axios.put(`${API_URL}/${firstProject.id}`, {
+    ...firstProject,
+    users: updatedUsers
+  });
+
+  reloadUsers();
+  closeModal();
+};
 
   return (
     <div className="fixed inset-0 bg-black/30 flex mt-20 items-center justify-center">

@@ -6,8 +6,7 @@ import User from './pages/User'
 import Project from './pages/Project'
 import { ProjectProvider } from './Context/ProjectProvier'
 import { UserProvider } from './Context/UserProvider'
-import UserDetail from './pages/UserDetail' 
-
+import UserDetail from './pages/UserDetail'
 
 function App() {
   return (

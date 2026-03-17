@@ -33,7 +33,8 @@ const PageTitle = ({ onAddClick }) => {
                     Add Project
                 </button>
             )
-        }
+        },
+         
 
     }
 
