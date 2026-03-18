@@ -44,7 +44,7 @@ const User = () => {
 
       <PageTitle onAddClick={() => setOpenModal(true)} />
 
-      <section className="bg-white mt-7 mx-10 rounded-md shadow-md border border-gray-300 overflow-hidden">
+      <section className="bg-white mt-7 rounded-md shadow-md border border-gray-300 overflow-hidden">
 
         {/* Header */}
         <div className="flex justify-between px-10 py-3">
@@ -60,10 +60,10 @@ const User = () => {
         {/* Table */}
         <section className="px-10 pt-2 pb-9">
 
-          <table className="w-full border border-gray-200">
+          <table className="w-full border border-gray-200"> 
 
             <thead>
-              <tr className="bg-[#F8F8F8] border-b">
+              <tr className="bg-[#F8F8F8] border-b"> 
 
                 <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
                 <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
