@@ -55,7 +55,7 @@ const TaskDetails = () => {
           </div>
         </header>
 
-        <div className='w-1/6 mb-3 px-4'>
+        <div className='min-w-1/6 w-auto mb-3 px-4'>
           <span className='font-semibold text-gray-700 text-xl capitalize'>{task.task_name}</span>
         </div>
       </div>
