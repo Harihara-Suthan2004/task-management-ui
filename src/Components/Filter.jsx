@@ -8,7 +8,7 @@ const Filter = ({ onClose, onApply, currentFilters, type = "project", projectDat
         status: currentFilters.status || "",
         priority: currentFilters.priority || "",
         assignedTo: currentFilters.assignedTo || "",
-        itemsPerPage: currentFilters.itemsPerPage || "10"
+        itemsPerPage: currentFilters.itemsPerPage || "10" 
     });
 
     const handleChange = (e) => {
@@ -26,7 +26,9 @@ const Filter = ({ onClose, onApply, currentFilters, type = "project", projectDat
 
             <section className='relative flex flex-col bg-white w-full max-w-1/4 h-screen shadow-2xl animate-slide-in'>
                 <div className='flex justify-between items-center px-6 py-6 border-b border-b-gray-300'>
-                    <span className='font-bold text-xl text-gray-800'>{type === 'task' ? 'Task Filters' : 'Project Filters'}</span>
+                    <span className='font-bold text-xl text-gray-800 capitalize'>
+  {type} Filters
+</span>
                     <button onClick={onClose} className='p-2 hover:bg-gray-100 rounded-full cursor-pointer'><img src={CloseIcon} className='w-5 h-5' /></button>
                 </div>
 
