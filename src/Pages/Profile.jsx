@@ -29,7 +29,7 @@ const Profile = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}  // ✅ fix
-              className="w-2xl border rounded-md px-3 py-2 mt-1"
+              className="w-2xl border border-gray-200 rounded-lg p-2.5 outline-none focus:ring-1 focus:ring-gray-400  px-3 py-2 mt-1"
             />
           </div>
 
@@ -40,7 +40,7 @@ const Profile = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}  // ✅ fix
-              className="w-2xl border rounded-md px-3 py-2 mt-1"
+              className="w-2xl border border-gray-200 rounded-lg p-2.5 outline-none focus:ring-1 focus:ring-gray-400  px-3 py-2 mt-1"
             />
           </div>
 
@@ -51,7 +51,7 @@ const Profile = () => {
               type="text"
               value="admin"
               disabled
-              className="w-2xl border rounded-md px-3 py-2 mt-1 bg-gray-100"
+              className="w-2xl border border-gray-200 rounded-md px-3 py-2 mt-1 bg-gray-100"
             />
             <p className="text-xs text-gray-400 mt-1">
               Role is disabled - you can't edit the role

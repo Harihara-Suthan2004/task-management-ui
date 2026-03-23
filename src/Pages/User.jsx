@@ -137,7 +137,11 @@ const User = () => {
             <tbody className="divide-y divide-gray-100">
               {displayUsers.length > 0 ? (
                 displayUsers.map((user, index) => (
-                  <tr key={user.id}>
+                  <tr
+  key={user.id}
+  onClick={() => navigate(`/User/${user.id}`)}
+  className="cursor-pointer hover:bg-gray-50 transition"
+>
                     <td className="p-4 text-sm">{index + 1}</td>
                     <td className="p-4 text-sm">{user.name}</td>
                     <td className="p-4 text-sm">{user.email}</td>
@@ -150,7 +154,7 @@ const User = () => {
                             : "bg-green-100 text-green-600"
                         }`}
                       >
-                        {user.role.toUpperCase()}
+                        {user.role.toLowerCase()}
                       </span>
                     </td>
 
@@ -160,9 +164,9 @@ const User = () => {
 
                     <td className="p-4 text-center">
                       <div className="flex justify-center gap-3">
-                        <button onClick={() => navigate(`/User/${user.id}`)}>
-                          <img src={ViewIcon} className="w-5 h-5" />
-                        </button>
+                       <button>
+  <img src={ViewIcon} className="w-5 h-5" />
+</button>
 
                         <button onClick={() => setDeleteUser(user)}>
                           <img
