@@ -47,7 +47,7 @@ const TaskModel = ({ onClose, projectData }) => {
     <div className='flex flex-col gap-4'>
       <section className='flex flex-col gap-3'>
         <div className='flex flex-col'>
-          <label className='text-gray-600 font-medium'>Title</label>
+          <label className='text-gray-600 font-medium'>Title <span className="text-gray-500 font-normal">*</span></label>
           <input 
             name="task_name"
             value={formData.task_name}
@@ -60,6 +60,7 @@ const TaskModel = ({ onClose, projectData }) => {
           <textarea 
             name="description"
             value={formData.description}
+            placeholder='Enter task description'
             onChange={handleChange}
             className='border border-gray-200 p-2 rounded-md' 
           />
@@ -68,7 +69,7 @@ const TaskModel = ({ onClose, projectData }) => {
 
       <section className='grid grid-cols-2 gap-7'>
         <div className='flex flex-col'>
-          <label className='text-gray-600 font-medium'>Status</label>
+          <label className='text-gray-600 font-medium'>Status <span className="text-gray-500 font-normal">*</span> </label>
           <select name="status" value={formData.status} onChange={handleChange} className='border border-gray-200 rounded-md p-2'>
             <option value="To Do">to do</option>
             <option value="Done">done</option>
@@ -76,7 +77,7 @@ const TaskModel = ({ onClose, projectData }) => {
           </select>
         </div>
         <div className='flex flex-col'>
-          <label className='text-gray-600 font-medium'>Priority</label>
+          <label className='text-gray-600 font-medium'>Priority <span className="text-gray-500 font-normal">*</span> </label>
           <select name="priority" value={formData.priority} onChange={handleChange} className='border border-gray-200 rounded-md p-2'>
             <option value="Low">Low</option>
             <option value="High">High</option>
@@ -84,11 +85,11 @@ const TaskModel = ({ onClose, projectData }) => {
           </select>
         </div>
         <div className='flex flex-col'>
-          <label className='text-gray-600 font-medium'>Due Date</label>
+          <label className='text-gray-600 font-medium'>Due Date <span className="text-gray-500 font-normal">*</span> </label>
           <input name="due_date" type="Date" value={formData.due_date} onChange={handleChange} className='border border-gray-200 rounded-md p-2' />
         </div>
         <div className='flex flex-col'>
-          <label className='text-gray-600 font-medium'>Assigned To</label>
+          <label className='text-gray-600 font-medium'>Assigned To <span className="text-gray-500 font-normal">*</span> </label>
           <select name="user_id" value={formData.user_id} onChange={handleChange} className='border border-gray-200 rounded-md p-2'>
             <option value="">Select a member</option>
             {projectManager && <option value={projectManager}>{projectManager} (Manager)</option>}
@@ -97,11 +98,18 @@ const TaskModel = ({ onClose, projectData }) => {
             ))}
           </select>
         </div>
-        <div className='flex flex-col'>
-          <label htmlFor="" className='text-gray-600 font-medium'>attachment</label>
-          <input type="file" className='border border-gray-200 rounded-md p-2'/>
-        </div>
       </section>
+      <div className='flex flex-col'>
+          <label htmlFor="" className='text-gray-600 font-medium'>attachment</label>
+          <input type="file" className="px-2 py-1 text-sm text-gray-500 cursor-pointer
+      file:mr-4 file:py-3 file:px-6
+      file:rounded-md file:border-0
+      file:text-sm file:font-semibold
+      file:bg-blue-100 file:text-blue-800
+      hover:file:bg-blue-300
+      border border-gray-200 rounded-md"/>
+      <span className='text-gray-400 w-full'>Allowed formats: Images,PDF, Documents (max: 2MB per file) </span>
+        </div>
 
       <div className='flex justify-end gap-3.5 items-center mt-4'>
         <button onClick={onClose} className='bg-gray-300 hover:bg-gray-400 rounded-md px-4 py-2'>Cancel</button>

@@ -89,22 +89,28 @@ const TaskDetails = () => {
               <div className="p-6 grid grid-cols-3 gap-y-8 border-t border-gray-50">
 
                 {/* --- CUSTOM STATUS DROPDOWN --- */}
-                <div className="relative z-50">
+                <div className="relative z-50 w-full">
                   <p className="text-gray-400 text-xs font-bold uppercase mb-2">Status</p>
-                  <div className="relative inline-block">
-                    <div
+                  <div className="relative inline-block w-10/12">
+                    <div 
                       onClick={() => { setIsStatusMenuOpen(!isStatusMenuOpen); setIsPriorityMenuOpen(false); }}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 cursor-pointer transition-all ${currentStatus.bg} ${currentStatus.text}`}
+                      className={`flex items-center justify-between gap-2 px-3 py-1.5 rounded-lg border border-gray-200 cursor-pointer transition-all ${currentStatus.bg} ${currentStatus.text}`}
                     >
-                      <span className={`w-3 h-3 rounded-full ${currentStatus.dot}`}></span>
+                      <div className='flex items-center gap-2'>
+                        <span className={`w-3 h-3 rounded-full ${currentStatus.dot}`}></span>
                       <span className="font-semibold text-sm capitalize">{currentStatus.label}</span>
-                      <img src={DownArrowIcon} className={`w-3 h-3 ml-2 opacity-50 transition-transform ${isStatusMenuOpen ? 'rotate-180' : ''}`} alt="chevron" />
+                      </div>
+                      
+                      <div className='flex items-center justify-end'>
+                        <img src={DownArrowIcon} className={`w-5 h-5 ml-2 opacity-50 transition-transform ${isStatusMenuOpen ? 'rotate-180' : ''}`} alt="chevron" />
+                      </div>
+                      
                     </div>
 
                     {isStatusMenuOpen && (
                       <>
-                        <div className="fixed inset-0 z-10" onClick={() => setIsStatusMenuOpen(false)}></div>
-                        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-2xl z-50 py-1">
+                        <div className="fixed inset-0 z-10 " onClick={() => setIsStatusMenuOpen(false)}></div>
+                        <div className="absolute left-0 mt-2 w-full bg-white border border-gray-100 rounded-xl shadow-2xl z-50 py-1">
                           {statusOptions.map((opt) => (
                             <div
                               key={opt.value}
@@ -128,22 +134,25 @@ const TaskDetails = () => {
                 </div>
 
                 {/* --- CUSTOM PRIORITY DROPDOWN --- */}
-                <div className="relative z-40">
+                <div className="relative z-10 w-full">
                   <p className="text-gray-400 text-xs font-bold uppercase mb-2">Priority</p>
-                  <div className="relative inline-block">
+                  <div className="relative inline-block w-full">
                     <div
                       onClick={() => { setIsPriorityMenuOpen(!isPriorityMenuOpen); setIsStatusMenuOpen(false); }}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 cursor-pointer transition-all ${currentPriority.bg} ${currentPriority.text}`}
+                      className={`flex w-10/12 items-center justify-between gap-2 px-3 py-1.5 rounded-lg border border-gray-200 cursor-pointer transition-all ${currentPriority.bg} ${currentPriority.text}`}
                     >
-                      <span className={`w-3 h-3 rounded-full ${currentPriority.dot}`}></span>
-                      <span className="font-semibold text-sm capitalize">{currentPriority.label}</span>
+                      <div className='flex items-center gap-2'>
+                        <span className={`w-3 h-3 rounded-full ${currentPriority.dot}`}></span>
+                        <span className="font-semibold text-sm capitalize">{currentPriority.label}</span>
+                      </div>
+                      
                       <img src={DownArrowIcon} className={`w-3 h-3 ml-2 opacity-50 transition-transform ${isPriorityMenuOpen ? 'rotate-180' : ''}`} alt="chevron" />
                     </div>
 
                     {isPriorityMenuOpen && (
                       <>
-                        <div className="fixed inset-0 z-10" onClick={() => setIsPriorityMenuOpen(false)}></div>
-                        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-2xl z-50 py-1">
+                        <div className="fixed inset-0 z-10 " onClick={() => setIsPriorityMenuOpen(false)}></div>
+                        <div className="absolute left-0 mt-2 w-10/12 bg-white border border-gray-100 rounded-xl shadow-2xl z-50 py-1">
                           {priorityOptions.map((opt) => (
                             <div
                               key={opt.value}
