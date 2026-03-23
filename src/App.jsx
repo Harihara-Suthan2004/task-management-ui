@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import User from './pages/User'
@@ -10,31 +10,87 @@ import TaskDetails from './pages/TaskDetails'
 import { UserProvider } from './Context/UserProvider'
 import UserDetail from './pages/UserDetail'
 import Profile from './pages/Profile'
+import Welcome from './pages/Welcome'
+import { useContext } from 'react'
+import { UserContext } from './Context/UserContext'
+import { Navigate } from "react-router-dom";
+
+// function App() {
+//   const { isAuthenticated } = useContext(UserContext);
+//   return (
+//     <>
+//       <ProjectProvider>
+//         <UserProvider>
+//           <BrowserRouter>
+//             <Routes>
+//               <Route 
+//         path="/welcome" 
+//         element={!isAuthenticated ? <Welcome /> : <Navigate to="/" />} 
+//       />
+
+      
+//       <Route 
+//         path="/" 
+//         element={isAuthenticated ? <Layout /> : <Navigate to="/welcome" />}
+//       ></Route>
+//               <Route path="/" element={<Layout />}>
+//                 <Route index element={<Dashboard />} />
+//                 <Route path='User' element={<User />} />
+//                 <Route path='User/:id' element={<UserDetail />} />
+//                 <Route path='Project' element={<Project />} />
+
+//                 <Route path='Project/:id' element={<ProjectDetails />} />
+//                 <Route path="/project/:id/task/:taskId" element={<TaskDetails />} />
+//                 <Route path="/profile" element={<Profile />} />
+
+//               </Route>
+//               <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/welcome"} />} />
+//             </Routes>
+//           </BrowserRouter>
+//         </UserProvider>
+//       </ProjectProvider>
+//     </>
+//   )
+// }
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <ProjectProvider>
-        <UserProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path='User' element={<User/>}/>
-            <Route path='User/:id' element={<UserDetail/>}/>
-            <Route path='Project' element={<Project/>}/>
-
-            <Route path='Project/:id' element={<ProjectDetails/>}/>
-            <Route path="/project/:id/task/:taskId" element={<TaskDetails />} />
-            <Route path="/profile" element={<Profile />} />
-
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      </UserProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
       </ProjectProvider>
-    </>
-  )
+    </UserProvider>
+  );
 }
 
-export default App
+function AppRoutes() {
+  const { isAuthenticated } = useContext(UserContext);
+
+  return (
+    <Routes>
+      <Route 
+        path="/welcome" 
+        element={!isAuthenticated ? <Welcome /> : <Navigate to="/" />} 
+      />
+
+      <Route 
+        path="/" 
+        element={isAuthenticated ? <Layout /> : <Navigate to="/welcome" />}
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="User" element={<User />} />
+        <Route path="User/:id" element={<UserDetail />} />
+        <Route path="Project" element={<Project />} />
+        <Route path="Project/:id" element={<ProjectDetails />} />
+        <Route path="project/:id/task/:taskId" element={<TaskDetails />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/welcome"} />} />
+    </Routes>
+  );
+}
+
+export default App;

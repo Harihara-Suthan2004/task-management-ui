@@ -7,6 +7,15 @@ export const UserProvider = ({ children }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login=()=>{
+    setIsAuthenticated(true);
+  }
+  const logout=()=>{
+    setIsAuthenticated(false);
+  }
+
   const refreshUsers = async () => {
     try {
       const data = await getUsers();
@@ -23,7 +32,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ allUsers, loading, refreshUsers }}>
+    <UserContext.Provider value={{ allUsers, loading,isAuthenticated,logout,login, refreshUsers }}>
       {children}
     </UserContext.Provider>
   );

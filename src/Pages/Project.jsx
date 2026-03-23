@@ -40,8 +40,8 @@ const Project = () => {
       <PageTitle onAddClick={() => setisModelOpen(true)} />
 
       {isModelOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg mx-4">
+        <div className="fixed inset-0 z-10 flex items-center justify-center pt-20 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg mx-4 mb-4">
             <ProjectModel onClose={() => setisModelOpen(false)} />
           </div>
         </div>

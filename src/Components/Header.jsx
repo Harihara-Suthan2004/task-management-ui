@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { UserContext } from '../Context/UserContext'
 const Header = () => {
 
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
+
+    const { logout } = useContext(UserContext)
 
    const handleLogout = () => {
     setOpen(false)   // ✅ close dropdown
@@ -13,7 +15,9 @@ const Header = () => {
     // clear auth
     localStorage.removeItem("token")
 
-    navigate("/") // redirect
+    logout()
+
+    navigate("/welcome") // redirect
 }
     return (
         <section className='flex justify-between items-center pb-1 border-gray-300 border-b'>

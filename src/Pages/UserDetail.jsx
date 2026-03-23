@@ -9,7 +9,7 @@ const UserDetail = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const [showRoleMenu, setShowRoleMenu]   = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
