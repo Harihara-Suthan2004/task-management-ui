@@ -4,6 +4,8 @@ import RegisterModal from "../Components/RegisterModal";
 import { UserContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faUsers, faClipboard, faCircleCheck,faStar  } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -189,9 +191,9 @@ const [showRegister, setShowRegister] = useState(false);
           <div className="grid md:grid-cols-3 gap-8 items-center perspective-[1000px]">
             {/* Administrator */}
             <div className="bg-white border border-red-200 rounded-xl shadow-sm p-11 text-center transform scale-95 transition-all duration-300  hover:scale-100 hover:-translate-y-3 hover:shadow-2xl">
-              <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-red-100 text-red-500 text-xl">
-                ✨
-              </div>
+             <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-red-100 text-red-500 text-xl">
+  <FontAwesomeIcon icon={faStar} />
+</div>
 
               <h3 className="mt-4 text-lg font-semibold text-gray-900">
                 Administrator
@@ -210,9 +212,9 @@ const [showRegister, setShowRegister] = useState(false);
 
             {/* Project Manager */}
             <div className="bg-white border border-blue-200 rounded-xl shadow-lg p-8 text-center transform scale-105 transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl">
-              <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-blue-100 text-blue-500 text-xl">
-                📋
-              </div>
+            <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-blue-100 text-blue-500">
+  <FontAwesomeIcon icon={faClipboard} className="text-lg" />
+</div>
 
               <h3 className="mt-4 text-lg font-semibold text-gray-900">
                 Project Manager
@@ -233,9 +235,9 @@ const [showRegister, setShowRegister] = useState(false);
 
             {/* Team Member */}
             <div className="bg-white border border-red-200 rounded-xl shadow-sm p-8 text-center transform scale-95 transition-all duration-300  hover:scale-100 hover:-translate-y-3 hover:shadow-2xl">
-              <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-green-100 text-green-500 text-xl">
-                ✔
-              </div>
+              <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-green-100 text-green-500">
+  <FontAwesomeIcon icon={faCircleCheck} className="text-lg" />
+</div>
 
               <h3 className="mt-4 text-lg font-semibold text-gray-900">
                 Team Member
@@ -249,10 +251,10 @@ const [showRegister, setShowRegister] = useState(false);
                 <li>✔ View assigned tasks only</li>
                 <li>✔ Update task status (To Do, In Progress, Done)</li>
                 <li>✔ View project context</li>
-                <li className="text-red-500">
+                <li className="text-gray-500">
                   ✖ Cannot create or assign tasks
                 </li>
-                <li className="text-red-500">
+                <li className="text-gray-500">
                   ✖ Cannot modify project details
                 </li>
               </ul>
@@ -274,77 +276,75 @@ const [showRegister, setShowRegister] = useState(false);
           </p>
 
           {/* Steps */}
-          <div className="grid md:grid-cols-4 gap-10 mt-14 items-center">
-            {/* Step 1 */}
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full border border-blue-300 text-blue-600 text-xl">
-                +
-              </div>
+        <div className="grid md:grid-cols-4 gap-10 mt-14 items-center">
 
-              <div className="mt-4 px-16 py-2 text-xs rounded-full bg-blue-100 text-blue-600">
-                Step 1
-              </div>
+  {/* Step 1 */}
+  <div className="flex flex-col items-center">
+    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white border border-blue-300 text-blue-600 text-xl">
+      <FontAwesomeIcon icon={faPlus} />
+    </div>
 
-              <h4 className="mt-2 font-semibold text-gray-900">Admin</h4>
+    <div className="mt-4 px-16 py-2 text-xs rounded-full font-bold bg-blue-200 text-blue-600">
+      Step 1
+    </div>
 
-              <p className="text-sm text-gray-600">Creates Project</p>
-            </div>
+    <h4 className="mt-2 font-semibold text-gray-900">Admin</h4>
+    <p className="text-sm text-gray-600">Creates Project</p>
+  </div>
 
-            {/* Step 2 */}
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full border border-blue-300 text-blue-600 text-xl">
-                👥
-              </div>
+  {/* Step 2 */}
+  <div className="flex flex-col items-center">
+    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white border border-blue-300 text-blue-600 text-xl">
+      <FontAwesomeIcon icon={faUsers} />
+    </div>
 
-              <div className="mt-4 px-16 py-2 text-xs rounded-full bg-blue-100 text-blue-600">
-                Step 2
-              </div>
+    <div className="mt-4 px-16 py-2 text-xs rounded-full font-bold bg-blue-200 text-blue-600">
+      Step 2
+    </div>
 
-              <h4 className="mt-2 font-semibold text-gray-900">Admin</h4>
+    <h4 className="mt-2 font-semibold text-gray-900">Admin</h4>
+    <p className="text-sm text-gray-600">Assigns Manager</p>
+  </div>
 
-              <p className="text-sm text-gray-600">Assigns Manager</p>
-            </div>
+  {/* Step 3 */}
+  <div className="flex flex-col items-center">
+    <div className="w-14 h-14 flex items-center justify-center rounded-full border bg-white border-blue-300 text-blue-600 text-xl">
+      <FontAwesomeIcon icon={faClipboard} />
+    </div>
 
-            {/* Step 3 */}
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full border border-blue-300 text-blue-600 text-xl">
-                📋
-              </div>
+    <div className="mt-4 px-16 py-2 text-xs rounded-full font-bold bg-blue-200 text-blue-600">
+      Step 3
+    </div>
 
-              <div className="mt-4 px-16 py-2 text-xs rounded-full bg-blue-100 text-blue-600">
-                Step 3
-              </div>
+    <h4 className="mt-2 font-semibold text-gray-900">Manager</h4>
+    <p className="text-sm text-gray-600">Creates Tasks</p>
+  </div>
 
-              <h4 className="mt-2 font-semibold text-gray-900">Manager</h4>
+  {/* Step 4 */}
+  <div className="flex flex-col items-center">
+    <div className="w-14 h-14 flex items-center justify-center rounded-full border bg-white border-blue-300 text-blue-600 text-xl">
+      <FontAwesomeIcon icon={faCircleCheck} />
+    </div>
 
-              <p className="text-sm text-gray-600">Creates Tasks</p>
-            </div>
+    <div className="mt-4 px-16 py-2 text-xs rounded-full font-bold bg-blue-200 text-blue-600">
+      Step 4
+    </div>
 
-            {/* Step 4 */}
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full border border-blue-300 text-blue-600 text-xl">
-                ✔
-              </div>
+    <h4 className="mt-2 font-semibold text-gray-900">User</h4>
+    <p className="text-sm text-gray-600">Completes Tasks</p>
+  </div>
 
-              <div className="mt-4 px-16 py-2 text-xs rounded-full bg-blue-100 text-blue-600">
-                Step 4
-              </div>
-
-              <h4 className="mt-2 font-semibold text-gray-900">User</h4>
-
-              <p className="text-sm text-gray-600">Completes Tasks</p>
-            </div>
-          </div>
+</div>
         </div>
       </section>
       {/* CTA Section */}
-      <section className="w-full py-24 px-6 bg-blue-300  text-center">
+      <section className="w-full py-24 px-6 bg-[rgb(37,99,235)]  text-center">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-3xl font-bold text-white">
             Ready to Streamline Your Team's Workflow?
           </h2>
 
-          <p className="mt-4 text-gray-700">
+          <p className="mt-4 text-white">
             Get started in minutes with our role-based project management
             system.
           </p>
@@ -352,14 +352,14 @@ const [showRegister, setShowRegister] = useState(false);
           <div className="mt-8 flex justify-center gap-4">
             <button
                onClick={() => setShowRegister(true)}
-              className="px-6 py-3  text-white rounded-lg bg-blue-600 hover:bg-blue-700 transition"
+              className="px-6 py-3  text-blue-600 font-bold rounded-lg bg-white hover:bg-gray-200 transition"
             >
               Create Account
             </button>
 
             <button
               onClick={() => setShowLogin(true)}
-              className="px-6 py-3 border border-white text-white rounded-lg hover:bg-blue-100 transition"
+              className="px-6 py-3 border font-bold border-white text-white rounded-lg hover:bg-gray-200 transition"
             >
               Sign In
             </button>

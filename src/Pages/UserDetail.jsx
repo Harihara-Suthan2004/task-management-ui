@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faCalendar, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 const API_URL = "https://69a720a32cd1d055268ff452.mockapi.io/tm_project";
 
@@ -70,18 +72,17 @@ const UserDetail = () => {
   }
 
   return (
-    <div className="bg-[#ebe8e8] min-h-screen p-6">
-      {/* BACK BUTTON */}
+   <div className="bg-[#ebe8e8] min-h-screen">
 
-      <div className="mb-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="w-10 h-8 flex items-center justify-center rounded-md bg-gray-900 text-white hover:bg-gray-800"
-        >
-          ←
-        </button>
-      </div>
-
+  {/* BACK BUTTON */}
+  <div className="px-4 -mt-6 my-2">
+    <button
+      onClick={() => navigate(-1)}
+      className="w-10 h-8 flex items-center justify-center rounded-md bg-gray-500 text-white hover:bg-gray-800"
+    >
+      ←
+    </button>
+  </div>
       {/* USER HEADER */}
 
       <div className="bg-white rounded-xl shadow p-6 flex items-center gap-6">
@@ -134,7 +135,7 @@ const UserDetail = () => {
             </div>
 
             <span className="bg-gray-200 px-3 py-1 rounded-full text-xs">
-              Created by: Test Admin
+              Created by : Test Admin
             </span>
           </div>
         </div>
@@ -171,26 +172,41 @@ const UserDetail = () => {
 
       {/* USER INFO */}
 
-      <div className="bg-white rounded-xl shadow mt-6 p-6">
-        <h3 className="font-semibold mb-4">User Information</h3>
+<div className="bg-white rounded-xl shadow mt-6 p-6">
+  <h3 className="font-semibold mb-4">User Information</h3>
 
-        <div className="grid grid-cols-3 gap-6">
-          <div>
-            <p className="text-gray-500 text-sm">Email</p>
-            <p>{user.email}</p>
-          </div>
+  {/* KEEP EVERYTHING INSIDE THIS BOX */}
+  <div className="grid grid-cols-3 gap-6">
 
-          <div>
-            <p className="text-gray-500 text-sm">Member Since</p>
-            <p>25 February 2026</p>
-          </div>
-
-          <div>
-            <p className="text-gray-500 text-sm">Account Status</p>
-            <p className="text-green-600 font-medium">Verified</p>
-          </div>
-        </div>
+    {/* Email */}
+    <div className="flex items-center gap-3">
+      <FontAwesomeIcon icon={faEnvelope} className="text-gray-400 text-lg" />
+      <div>
+        <p className="text-gray-500 text-sm">Email</p>
+        <p>{user.email}</p>
       </div>
+    </div>
+
+    {/* Member Since */}
+    <div className="flex items-center gap-3">
+      <FontAwesomeIcon icon={faCalendar} className="text-gray-400 text-lg" />
+      <div>
+        <p className="text-gray-500 text-sm">Member Since</p>
+        <p>25 February 2026</p>
+      </div>
+    </div>
+
+    {/* Status */}
+    <div className="flex items-center gap-3">
+      <FontAwesomeIcon icon={faCircleCheck} className="text-green-500 text-lg" />
+      <div>
+        <p className="text-gray-500 text-sm">Account Status</p>
+        <p className="text-green-600 font-medium">Verified</p>
+      </div>
+    </div>
+
+  </div>
+</div>
 
       {/* ACTIVITY LOG */}
 
