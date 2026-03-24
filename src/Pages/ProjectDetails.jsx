@@ -7,10 +7,20 @@ import ViewIcon from '../assets/images/ViewIcon.png'
 import DeleteIcon from '../assets/images/DeleteIcon.png'
 import TaskModel from '../components/TaskModel'
 import Filter from '../components/Filter'
-
+import DeleteTaskModel from '../components/DeleteTaskModel'
 const ProjectDetails = () => {
     const [visible, setvisible] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState(null);
+
+    const openDeleteModal = (e, task) => {
+        e.stopPropagation();
+        setTaskToDelete(task);
+        setIsDeleteModalOpen(true);
+    };
+
     const { id } = useParams();
     const { allData, loading, deleteTask } = useProject();
     const navigate = useNavigate();
@@ -37,9 +47,7 @@ const ProjectDetails = () => {
     });
 
     const handleDeleteTask = (taskId) => {
-        if (window.confirm("Delete this task?")) {
-            deleteTask(id, taskId);
-        }
+        deleteTask(id, taskId);
     };
 
     //  Safe check for the .find() method
@@ -61,6 +69,13 @@ const ProjectDetails = () => {
                         <TaskModel onClose={() => setvisible(false)} projectData={project} />
                     </div>
                 </div>
+            )}
+            {isDeleteModalOpen && (
+                <DeleteTaskModel
+                    task={taskToDelete}
+                    closeModal={() => setIsDeleteModalOpen(false)}
+                    confirmDelete={handleDeleteTask}
+                />
             )}
 
             {isFilterOpen && (
@@ -104,21 +119,21 @@ const ProjectDetails = () => {
                     <tbody className=''>
                         {filteredTasks.length > 0 ? (
                             filteredTasks.slice(0, parseInt(filters.itemsPerPage)).map((task) => (
-                                <tr key={task.id} className="">
+                                <tr key={task.id} className=" cursor-pointer " onClick={() => navigate(`/project/${id}/task/${task.id}`)}>
                                     <td className="p-4 text-sm font-medium text-gray-700">{task.task_name}</td>
                                     <td className="p-4 text-sm text-gray-600">{getUserName(task.user_id)}</td>
                                     <td className="p-4">
-                                        <span className="text-xs bg-gray-100 px-2 py-1 rounded uppercase">{task.status}</span>
+                                        <span className="text-xs bg-gray-100 px-2 py-1 rounded ">{task.status}</span>
                                     </td>
                                     <td className="p-4">
-                                        <span className={`text-xs font-bold px-2 py-1 rounded uppercase ${task.priority === 'high' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'
+                                        <span className={`text-xs font-bold px-2 py-1 rounded ${task.priority === 'high' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'
                                             }`}>
                                             {task.priority}
                                         </span>
                                     </td>
                                     <td className='p-4 flex justify-center gap-3'>
                                         <img src={ViewIcon} onClick={() => navigate(`/project/${id}/task/${task.id}`)} alt="view" className="w-5 cursor-pointer" />
-                                        <img src={DeleteIcon} alt="delete" onClick={() => handleDeleteTask(task.id)} className="w-5 cursor-pointer" />
+                                        <img src={DeleteIcon} alt="delete" onClick={(e) => openDeleteModal(e, task)} className="w-5 cursor-pointer" />
                                     </td>
                                 </tr>
                             ))

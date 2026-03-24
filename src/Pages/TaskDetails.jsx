@@ -5,11 +5,14 @@ import BackArrowIcon from '../assets/images/BackArrowIcon.png';
 import PencilIcon from '../assets/images/PencilIcons.png'
 import DownArrowIcon from '../assets/images/DownArrowIcon.png'
 import RightArrowIcon from '../assets/images/RightArrowIcon.png'
+import ActiveLogs from '../components/ActiveLogs';
 
 const TaskDetails = () => {
   const { id, taskId } = useParams();
   const navigate = useNavigate();
   const { allData, updateTask } = useProject();
+
+  const [activeTab, setActiveTab] = useState('Comments');
 
   const handleFieldChange = (field, value) => {
     updateTask(id, taskId, { [field]: value });
@@ -92,19 +95,19 @@ const TaskDetails = () => {
                 <div className="relative z-50 w-full">
                   <p className="text-gray-400 text-xs font-bold uppercase mb-2">Status</p>
                   <div className="relative inline-block w-10/12">
-                    <div 
+                    <div
                       onClick={() => { setIsStatusMenuOpen(!isStatusMenuOpen); setIsPriorityMenuOpen(false); }}
                       className={`flex items-center justify-between gap-2 px-3 py-1.5 rounded-lg border border-gray-200 cursor-pointer transition-all ${currentStatus.bg} ${currentStatus.text}`}
                     >
                       <div className='flex items-center gap-2'>
                         <span className={`w-3 h-3 rounded-full ${currentStatus.dot}`}></span>
-                      <span className="font-semibold text-sm capitalize">{currentStatus.label}</span>
+                        <span className="font-semibold text-sm capitalize">{currentStatus.label}</span>
                       </div>
-                      
+
                       <div className='flex items-center justify-end'>
                         <img src={DownArrowIcon} className={`w-5 h-5 ml-2 opacity-50 transition-transform ${isStatusMenuOpen ? 'rotate-180' : ''}`} alt="chevron" />
                       </div>
-                      
+
                     </div>
 
                     {isStatusMenuOpen && (
@@ -145,7 +148,7 @@ const TaskDetails = () => {
                         <span className={`w-3 h-3 rounded-full ${currentPriority.dot}`}></span>
                         <span className="font-semibold text-sm capitalize">{currentPriority.label}</span>
                       </div>
-                      
+
                       <img src={DownArrowIcon} className={`w-3 h-3 ml-2 opacity-50 transition-transform ${isPriorityMenuOpen ? 'rotate-180' : ''}`} alt="chevron" />
                     </div>
 
@@ -202,18 +205,68 @@ const TaskDetails = () => {
         {/* 3. Tabs Section */}
         <div className='pb-6 mx-4'>
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 mt-4">
+
+            {/* Tab Headers */}
             <div className="flex border-b border-gray-100">
-              <button className="px-6 py-3 border-b-2 border-blue-600 text-blue-600 font-semibold text-sm">Comments (1)</button>
-              <button className="px-6 py-3 text-gray-400 font-semibold text-sm hover:text-gray-600">Activity Log (4)</button>
-              <button className="px-6 py-3 text-gray-400 font-semibold text-sm hover:text-gray-600">Documents</button>
+              <button
+                onClick={() => setActiveTab('Comments')}
+                className={`px-6 py-3 font-semibold text-sm transition-all ${activeTab === 'Comments' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                Comments (1)
+              </button>
+              <button
+                onClick={() => setActiveTab('Activity')}
+                className={`px-6 py-3 font-semibold text-sm transition-all ${activeTab === 'Activity' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                Activity Log (4)
+              </button>
+              <button
+                onClick={() => setActiveTab('Documents')}
+                className={`px-6 py-3 font-semibold text-sm transition-all ${activeTab === 'Documents' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                Documents
+              </button>
             </div>
+
+            {/* Tab Content - Conditional Rendering */}
             <div className="p-6">
-              <textarea placeholder="Add a comment..." className="w-full border border-gray-200 rounded-lg p-4 focus:outline-blue-500 resize-none h-32" />
-              <div className="mt-8 border-t pt-6">
-                <p className="font-bold text-sm text-gray-700">Commenter: {project.manager || "Admin"}</p>
-                <p className="text-gray-600 mt-1">please do complete in today</p>
-                <div className="mt-4 w-16 h-16 bg-blue-600 flex items-center justify-center rounded-lg text-white font-bold text-xs">doc</div>
-              </div>
+
+              {activeTab === 'Comments' && (
+                <div>
+                  <textarea placeholder="Add a comment..." className="w-full border border-gray-200 rounded-lg p-4 focus:outline-blue-500 resize-none h-32" />
+                  <div className="mt-8 border-t pt-6">
+                    <p className="font-bold text-sm text-gray-700">Commenter: {project.manager || "Admin"}</p>
+                    <p className="text-gray-600 mt-1">please do complete in today</p>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'Activity' && (
+                <ActiveLogs />
+              )}
+
+              {activeTab === 'Documents' && (
+                <div className="text-gray-500 flex flex-col gap-3 ">
+                  <div className='flex items-center justify-center'>
+                    <span>No documents uploaded yet.</span>
+                  </div>
+                  <div className='flex' >
+                    <input type="file" className="w-full px-2 py-1 text-sm text-gray-500 cursor-pointer
+      file:mr-4 file:py-3 file:px-6
+      file:rounded-md file:border-0
+      file:text-sm file:font-semibold
+      file:bg-blue-100 file:text-blue-800
+      hover:file:bg-blue-300
+      border-none rounded-md"/>
+                    <div className='flex gap-2 justify-end items-center my-3'>
+                      <button className='bg-blue-600 rounded-md'><span className='text-white p-2'>Save</span></button>
+                      <button className='bg-gray-500 rounded-md'><span className='text-white p-2'>Cancel</span></button>
+                    </div>
+                  </div>
+                  <span className='text-gray-400 w-full'>Allowed formats: Images,PDF, Documents (max: 2MB per file) </span>
+                </div>
+              )}
+
             </div>
           </div>
         </div>

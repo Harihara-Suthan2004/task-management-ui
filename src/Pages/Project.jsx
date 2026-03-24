@@ -8,13 +8,24 @@ import DeleteIcon from '../assets/images/DeleteIcon.png'
 import ProjectModel from '../components/ProjectModel'
 import { useNavigate } from 'react-router-dom'
 import Filter from '../components/Filter'
+import DeleteProjectModel from '../components/DeleteProjectModel'
 
 const Project = () => {
   const { allData, loading, deleteProject } = useProject();
   const [isModelOpen, setisModelOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const [isDeleteModelOpen, setisDeleteModelOpen] = useState(false);
+  const [projectToDelete, setprojectToDelete] = useState(null);
+
   const [filters, setFilters] = useState({ search: "", itemsPerPage: "10" });
   const navigate = useNavigate();
+
+  const openDeleteModel = (e, project) => {
+    e.stopPropagation();
+    setprojectToDelete(project);
+    setisDeleteModelOpen(true);
+  }
 
   const filterProject = allData.filter((project) => {
     const searchTerm = filters.search.toLowerCase();
@@ -45,6 +56,14 @@ const Project = () => {
             <ProjectModel onClose={() => setisModelOpen(false)} />
           </div>
         </div>
+      )}
+
+      {isDeleteModelOpen && (
+        <DeleteProjectModel
+          project={projectToDelete}
+          closeModal={() => setisDeleteModelOpen(false)}
+          confirmDelete={deleteProject}
+        />
       )}
 
       {isFilterOpen && (
@@ -80,9 +99,8 @@ const Project = () => {
             <tbody className='divide-y divide-gray-100'>
               {displayProject.length > 0 ? (
 
-
                 displayProject.map((project) => (
-                  <tr key={project.id} className=''>
+                  <tr key={project.id} className='cursor-pointer' onClick={() => navigate(`/Project/${project.id}`)} >
                     <td className='p-4 text-sm'>{project.id}</td>
                     <td className='p-4 text-sm'>{project.project_title}</td>
                     <td className='p-4 text-sm leading-relaxed'>
@@ -101,11 +119,7 @@ const Project = () => {
                         <button>
                           <img src={EditIcon} alt="" className='w-5 h-5 cursor-pointer hover:scale-110 transition-transform' />
                         </button>
-                        <button onClick={() => {
-                          if (window.confirm("Are you sure want to delete the project")) {
-                            deleteProject(project.id);
-                          }
-                        }}>
+                        <button onClick={(e) => openDeleteModel(e, project)}>
                           <img src={DeleteIcon} alt="" className='w-5 h-5 cursor-pointer hover:scale-110 transition-transform' />
                         </button>
                       </div>

@@ -150,7 +150,7 @@ const User = () => {
                             : "bg-green-100 text-green-600"
                         }`}
                       >
-                        {user.role.toUpperCase()}
+                        {user.role}
                       </span>
                     </td>
 
