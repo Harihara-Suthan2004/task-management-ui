@@ -27,7 +27,7 @@ const User = () => {
     refreshUsers();
   }, [refreshUsers]);
 
-  // ✅ Flatten + unique users
+  //  Flatten + unique users
   const users = useMemo(() => {
     const flattened = allUsers
       .flatMap((project) => project.users || [])
@@ -36,7 +36,7 @@ const User = () => {
     return [...new Map(flattened.map((user) => [user.id, user])).values()];
   }, [allUsers]);
 
-  // ✅ Filter logic
+  //  Filter logic
   const filteredUsers = users.filter((user) => {
     const search = filters.search.toLowerCase();
     return (
@@ -47,7 +47,7 @@ const User = () => {
 
   const displayUsers = filteredUsers.slice(0, parseInt(filters.itemsPerPage));
 
-  // 🔄 Reset filter
+  // Reset filter
   const handleResetFilter = () => {
     setFilters({
       search: "",
@@ -154,8 +154,7 @@ const User = () => {
                             : "bg-green-100 text-green-600"
                         }`}
                       >
-                        {user.role}
-                        {user.role.toLowerCase()}
+                       {user.role?.includes('manager') ? 'manager' : 'user'}
                       </span>
                     </td>
 

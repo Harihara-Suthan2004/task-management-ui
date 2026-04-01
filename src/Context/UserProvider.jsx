@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from "react";
+// ✅ Fix - wrap refreshUsers in useCallback
+import React, { useState, useEffect, useCallback } from "react";
 import { getUsers } from "../Services/UserService";
 import { UserContext } from "./UserContext";
 
 export const UserProvider = ({ children }) => {
-
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login=()=>{
-    setIsAuthenticated(true);
-  }
-  const logout=()=>{
-    setIsAuthenticated(false);
-  }
+  const login = () => setIsAuthenticated(true);
+  const logout = () => setIsAuthenticated(false);
 
-  const refreshUsers = async () => {
+  const refreshUsers = useCallback(async () => {
     try {
       const data = await getUsers();
       setAllUsers(data || []);
@@ -25,14 +20,14 @@ export const UserProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []); // ✅ empty deps = stable function, no infinite loop
 
   useEffect(() => {
     refreshUsers();
-  }, []);
+  }, [refreshUsers]);
 
   return (
-    <UserContext.Provider value={{ allUsers, loading,isAuthenticated,logout,login, refreshUsers }}>
+    <UserContext.Provider value={{ allUsers, loading, isAuthenticated, logout, login, refreshUsers }}>
       {children}
     </UserContext.Provider>
   );

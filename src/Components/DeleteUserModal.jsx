@@ -3,6 +3,9 @@ import axios from "axios";
 
 const API_URL = "https://69a720a32cd1d055268ff452.mockapi.io/tm_project";
 
+
+
+
 const DeleteUserModal = ({ user, closeModal, reloadUsers }) => {
 const deleteUser = async () => {
   try {
