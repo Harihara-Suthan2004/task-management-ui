@@ -1,6 +1,7 @@
 import React, { useState,useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../Context/UserContext'
+import { toast } from 'react-toastify'
 const Header = () => {
 
     const navigate = useNavigate()
@@ -9,13 +10,14 @@ const Header = () => {
     const { logout } = useContext(UserContext)
 
    const handleLogout = () => {
-    setOpen(false)   // ✅ close dropdown
+    setOpen(false)   //  close dropdown
     console.log("logout clicked")
 
     // clear auth
     localStorage.removeItem("token")
 
     logout()
+    toast.success("Logged out successfully!")
 
     navigate("/welcome") // redirect
 }

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const initialForm = {
   email: "",
@@ -26,7 +28,7 @@ const LoginModal = ({ open, onClose,onSuccess }) => {
     onClose();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let newErrors = {};
 
     if (!form.email.trim()) {
@@ -41,20 +43,47 @@ const LoginModal = ({ open, onClose,onSuccess }) => {
 
     if (Object.keys(newErrors).length === 0) {
       if (forgotMode) {
-        alert("OTP Submitted ✅");
+        toast.info("OTP Submitted");
+        handleClose();
       } else {
-        alert("Login Successful ✅");
-        onSuccess(); 
-      }
+        try {
+          const response = await axios.post(
+            "http://localhost:3000/api/users/login",
+            {
+              email: form.email,
+              password: form.password,
+            },
+          );
 
-      handleClose();
+          const data = response.data;
+          toast.success("Login successful!");
+
+          localStorage.setItem("token", data.token);
+          if (data.user) {
+            localStorage.setItem("user", JSON.stringify(data.user));
+          }
+
+          onSuccess();
+          handleClose();
+        } catch (error) {
+        
+          if (error.response) {
+           
+            setErrors({
+              general: error.response.data.message || "Invalid credentials",
+            });
+          } else {
+            
+            setErrors({ general: "Cannot connect to server" });
+          }
+        }
+      }
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white w-105 p-8 rounded-xl shadow-lg relative">
-
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -70,6 +99,11 @@ const LoginModal = ({ open, onClose,onSuccess }) => {
 
         {!forgotMode ? (
           <>
+            {errors.general && (
+              <div className="bg-red-100 text-red-600 p-2 rounded mb-4 text-center text-sm">
+                {errors.general}
+              </div>
+            )}
             {/* Email */}
             <input
               type="email"
@@ -143,7 +177,6 @@ const LoginModal = ({ open, onClose,onSuccess }) => {
         >
           {forgotMode ? "Submit OTP" : "Sign In"}
         </button>
-
       </div>
     </div>
   );

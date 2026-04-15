@@ -1,4 +1,4 @@
-// ✅ Fix - wrap refreshUsers in useCallback
+//  Fix - wrap refreshUsers in useCallback
 import React, { useState, useEffect, useCallback } from "react";
 import { getUsers } from "../Services/UserService";
 import { UserContext } from "./UserContext";
@@ -6,7 +6,10 @@ import { UserContext } from "./UserContext";
 export const UserProvider = ({ children }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(()=>{
+    const token = localStorage.getItem('token');
+    return token ? true : false
+  });
 
   const login = () => setIsAuthenticated(true);
   const logout = () => setIsAuthenticated(false);
@@ -20,7 +23,7 @@ export const UserProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []); // ✅ empty deps = stable function, no infinite loop
+  }, []); //  empty deps = stable function, no infinite loop
 
   useEffect(() => {
     refreshUsers();

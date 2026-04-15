@@ -4,9 +4,15 @@ import { useLocation } from 'react-router-dom'
 const PageTitle = ({ onAddClick }) => {
     const location = useLocation();
 
+    const userData = localStorage.getItem('user');
+    const user = userData ? JSON.parse(userData) : null ;
+
+    const roleString = user?.role
+    ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase() + " " : " ";
+
     const pageconfig = {
         '/': {
-            title: 'Dashboard',
+            title: `${roleString} Dashboard`,
             button: null
         },
 
