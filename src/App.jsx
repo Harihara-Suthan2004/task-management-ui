@@ -16,6 +16,7 @@ import { UserContext } from "./Context/UserContext";
 import { Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ActivateAccount } from "./Pages/ActivateAccount";
 
 function App() {
   return (
@@ -46,7 +47,10 @@ function AppRoutes() {
         path="/welcome"
         element={!isAuthenticated ? <Welcome /> : <Navigate to="/" />}
       />
-
+      <Route 
+        path="/activate-account"
+        element={<ActivateAccount/>}
+        />
       <Route
         path="/"
         element={isAuthenticated ? <Layout /> : <Navigate to="/welcome" />}

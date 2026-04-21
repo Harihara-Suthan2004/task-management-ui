@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../components/PageTitle";
 import filtericon from "../assets/images/FilterIcon.png";
 import RefreshIcon from "../assets/images/RefreshIcon.png";
 import ViewIcon from "../assets/images/ViewIcon.png";
 import DeleteIcon from "../assets/images/DeleteIcon.png";
 import AddUserModal from "../components/AddUserModal";
-import DeleteUserModal from "../components/DeleteUserModal";
+// import DeleteUserModal from "../components/DeleteUserModal";
 import Filter from "../components/Filter";
 import { useUser } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -27,23 +27,15 @@ const User = () => {
     refreshUsers();
   }, [refreshUsers]);
 
-  //  Flatten + unique users
-  const users = useMemo(() => {
-    const flattened = allUsers
-      .flatMap((project) => project.users || [])
-      .filter((user) => user?.name && user?.email);
-
-    return [...new Map(flattened.map((user) => [user.id, user])).values()];
-  }, [allUsers]);
-
-  //  Filter logic
-  const filteredUsers = users.filter((user) => {
+  //  directly use all users
+  const filteredUsers = allUsers.filter((user)=>{
     const search = filters.search.toLowerCase();
-    return (
-      user.name?.toLowerCase().includes(search) ||
+    return(
+      user.name?.toLowerCase().includes(search) || 
       user.email?.toLowerCase().includes(search)
-    );
+    )
   });
+ 
 
   const displayUsers = filteredUsers.slice(0, parseInt(filters.itemsPerPage));
 
@@ -70,7 +62,7 @@ const User = () => {
     <div className="bg-[#ebe8e8] min-h-screen pb-10">
       <PageTitle onAddClick={() => setOpenModal(true)} />
 
-      {/* ✅ FILTER MODAL */}
+      {/*  FILTER MODAL */}
       {isFilterOpen && (
         <Filter
           type="user"
@@ -88,7 +80,7 @@ const User = () => {
           </span>
 
           <div className="flex items-center gap-2">
-            {/* 🔄 Refresh */}
+            {/*  Refresh */}
             {isFiltered && (
               <div
                 onClick={handleResetFilter}
@@ -98,7 +90,7 @@ const User = () => {
               </div>
             )}
 
-            {/* 🔍 Filter */}
+            {/*  Filter */}
             <div
               onClick={() => setIsFilterOpen(true)}
               className="flex items-center justify-center w-9 h-9 bg-[#F8F8F8] border border-gray-200 rounded-md cursor-pointer hover:bg-gray-100"
@@ -148,18 +140,21 @@ const User = () => {
 
                     <td className="p-4 text-sm">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          user.role === "manager"
+                        className={`px-3 py-1 rounded-full text-xs font-medium uppercase ${
+                          user.role === "manager" || user.role === "MANAGER" 
                             ? "bg-blue-100 text-blue-600"
                             : "bg-green-100 text-green-600"
                         }`}
                       >
-                       {user.role?.includes('manager') ? 'manager' : 'user'}
+                       {user.role}
                       </span>
                     </td>
 
-                    <td className="p-4 text-sm text-gray-600 font-medium">
-                      Yes
+                    <td className="p-4 text-sm ">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.is_active ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
+                        {user.is_active ? "Yes" : "Pending"}
+
+                      </span>
                     </td>
 
                     <td className="p-4 text-center">
@@ -170,7 +165,7 @@ const User = () => {
 
                         <button
                           onClick={(e) => {
-    e.stopPropagation();   // ✅ stop row click
+    e.stopPropagation();   //  stop row click
     setDeleteUser(user);
   }}
 >

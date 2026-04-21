@@ -15,6 +15,13 @@ export const UserProvider = ({ children }) => {
   const logout = () => setIsAuthenticated(false);
 
   const refreshUsers = useCallback(async () => {
+    //check if the token exist in localstorage
+    const token = localStorage.getItem('token');
+    if(!token){
+      //cancel api call
+      setLoading(false);
+      return;
+    }
     try {
       const data = await getUsers();
       setAllUsers(data || []);

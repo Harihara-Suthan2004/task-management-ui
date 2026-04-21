@@ -1,130 +1,131 @@
 import React, { useState } from "react";
-import axios from "axios";
-
-const API_URL = "https://69a720a32cd1d055268ff452.mockapi.io/tm_project";
+import { toast } from "react-toastify";
+import { createUser } from "../Services/UserService";
 
 const AddUserModal = ({ closeModal, reloadUsers }) => {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("USER");
 
-const createUser = async () => {
+  //loading state can't doublr click
+  const [isSubbmiting, setIsSubnmitting] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  if (!name || !email) {
-    alert("Please fill all fields");
-    return;
-  }
 
-  const res = await axios.get(API_URL);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); //prevent page from refreshing
 
-  const projects = res.data;
+    setErrors({});
+    let newErrors = {};
 
-  const firstProject = projects[0]; // choose project
+    //field validation logic
+    if(!name.trim()){
+      newErrors.name = "Name is Required"
 
-  const updatedUsers = [
-    ...firstProject.users,
-    {
-      id: Date.now().toString(),
-      name,
-      email,
-      role
     }
-  ];
+    if(!email.trim()){
+      newErrors.email = "Email is Required"
+    }else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      newErrors.email = "Please enter a valid email"
+    }
+if(Object.keys(newErrors).length>0){
+  setErrors(newErrors);
+  return;
+}
 
-  await axios.put(`${API_URL}/${firstProject.id}`, {
-    ...firstProject,
-    users: updatedUsers
-  });
+    setIsSubnmitting(true);
+    try {
+      //send data to backend
+      await createUser({name, email, role});
+      toast.success("User created! Invitation email sent.");
 
-  reloadUsers();
-  closeModal();
-};
+      //fetch new data from postgress
+      if (reloadUsers) {
+        reloadUsers();
+      }
+      closeModal();
+    } catch (error) {
+      //show backend error
+      toast.error(error.response?.data?.message || "Failed to create user.");
+    } finally {
+      setIsSubnmitting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/30 flex mt-20 items-center justify-center">
-
       <div className="bg-white w-105 rounded-lg shadow-lg p-6">
-
         <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Add New User</h2>
 
-          <h2 className="text-lg font-semibold">
-            Add New User
-          </h2>
-
-          <button onClick={closeModal}>
-            ✕
-          </button>
-
+          <button onClick={closeModal}>✕</button>
         </div>
+        <form onSubmit={handleSubmit}>
+          {/* Name */}
+          <div className="mb-4">
+            <label className="text-sm font-medium">Full Name</label>
 
-        {/* Name */}
-        <div className="mb-4">
-          <label className="text-sm font-medium">
-            Full Name
-          </label>
+            <input
+              type="text"
+              className="w-full border rounded p-2 mt-1"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e)=>{setName(e.target.value);
+                if(errors.name)setErrors({...errors, name: null});
+              }}
+            />
+            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+          </div>
 
-          <input
-            type="text"
-            className="w-full border rounded p-2 mt-1"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e)=>setName(e.target.value)}
-          />
-        </div>
+          {/* Email */}
+          <div className="mb-4">
+            <label className="text-sm font-medium">Email</label>
 
-        {/* Email */}
-        <div className="mb-4">
-          <label className="text-sm font-medium">
-            Email
-          </label>
+            <input
+              type="email"
+              className="w-full border rounded p-2 mt-1"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e)=>{
+                setEmail(e.target.value);
+                if(errors.email)setErrors({...errors,email: null})
+              }}
+            />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+          </div>
 
-          <input
-            type="email"
-            className="w-full border rounded p-2 mt-1"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e)=>setEmail(e.target.value)}
-          />
-        </div>
+          {/* Role */}
+          <div className="mb-6">
+            <label className="text-sm font-medium">Role</label>
 
-        {/* Role */}
-        <div className="mb-6">
-          <label className="text-sm font-medium">
-            Role
-          </label>
+            <select
+              className="w-full border rounded p-2 mt-1"
+              value={role}
+              onChange={(e)=>
+                setRole(e.target.value)
+              }
+            >
+              <option value="USER">User</option>
+              <option value="MANAGER">Manager</option>
+            </select>
+          </div>
 
-          <select
-            className="w-full border rounded p-2 mt-1"
-            value={role}
-            onChange={(e)=>setRole(e.target.value)}
-          >
-            <option value="user">User</option>
-            <option value="manager">Manager</option>
-          </select>
-        </div>
+          {/* Buttons */}
+          <div className="flex justify-end gap-3">
+            <button onClick={closeModal} className="border px-4 py-2 rounded">
+              Cancel
+            </button>
 
-        {/* Buttons */}
-        <div className="flex justify-end gap-3">
-
-          <button
-            onClick={closeModal}
-            className="border px-4 py-2 rounded"
-          >
-            Cancel
-          </button>
-
-          <button
-            onClick={createUser}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Create User
-          </button>
-
-        </div>
-
+            <button
+              type="submit"
+              disabled={isSubbmiting}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center gap-2 disabled:opacity-50 transition"
+            >
+              {isSubbmiting ? "Sending..." : "Create User"}
+            </button>
+          </div>
+        </form>
       </div>
-
     </div>
   );
 };
